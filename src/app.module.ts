@@ -3,18 +3,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SecretNoteModule } from './secret-note/secret-note.module';
+import { SecretNote } from './typeorm/entities/secret-note.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(
+      {
+        isGlobal: true,
+      }
+    ),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT),
+      port: parseInt(process.env.POSTGRES_PORT, 10),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
-      entities: [],
+      entities: [SecretNote],
       database: process.env.POSTGRES_DATABASE,
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     SecretNoteModule,
@@ -22,4 +29,5 @@ import { SecretNoteModule } from './secret-note/secret-note.module';
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SecretNote } from './entities/secret-note.entity';
+import { SecretNote } from '../typeorm/entities/secret-note.entity';
 import { CreateSecretNoteDto } from './dto/create-secret-note.dto';
 import { UpdateSecretNoteDto } from './dto/update-secret-note.dto';
-import { encrypt, decrypt } from '../crypto/utils';
+import { encrypt } from '../crypto/utils';
 
 @Injectable()
 export class SecretNoteService {
@@ -30,30 +30,50 @@ export class SecretNoteService {
 
   async findOneDecrypted(id: number): Promise<SecretNote> {
     const note = await this.secretNoteRepository.findOne({
-      where: { id }
+      where: { id },
+      select: ['note']
     });
-    note.note = decrypt(note.encryptedNote);
+
+    if(!note) {
+      throw new NotFoundException(`SecretNote with id ${id} not found`);
+    }
+
     return note;
   }
 
 
-  findOneEncrypted(id: number): Promise<SecretNote> {
-    return this.secretNoteRepository.findOne({
+  async findOneEncrypted(id: number): Promise<SecretNote> {
+    const note = await this.secretNoteRepository.findOne({
       where: { id },
-      select: ['id', 'encryptedNote'],
+      select: ['encryptedNote'],
     });
+
+    if(!note) {
+      throw new NotFoundException(`SecretNote with id ${id} not found`);
+    }
+
+    return note;
   }
 
   async update(id: number, updateNoteDto: UpdateSecretNoteDto): Promise<SecretNote> {
     const note = await this.secretNoteRepository.findOne({
       where: { id }
     });
+
+    if (!note) {
+      throw new NotFoundException(`SecretNote with id ${id} not found`);
+    }
+
     note.note = updateNoteDto.note;
     note.encryptedNote = encrypt(updateNoteDto.note);
     return this.secretNoteRepository.save(note);
   }
 
-  remove(id: number): Promise<void> {
-    return this.secretNoteRepository.delete(id).then(() => {});
+  async remove(id: number): Promise<void> {
+    const result = await this.secretNoteRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`SecretNote with id ${id} not found`);
+    }
   }
 }

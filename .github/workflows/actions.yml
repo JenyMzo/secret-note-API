@@ -57,7 +57,7 @@ jobs:
 
     - name: Build and push Docker images
       run: |
-        until docker-compose up --build
+        docker build . --file Dockerfile --tag secret-note-api-app:latest
 
     - name: Wait for DB to be ready
       run: |

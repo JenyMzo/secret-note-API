@@ -52,8 +52,7 @@ jobs:
 
     - name: Build and push Docker images
       run: |
-        docker-compose -f docker-compose.yml build
-        docker-compose -f docker-compose.yml up -d
+        docker-compose up --build
 
     - name: Wait for DB to be ready
       run: |

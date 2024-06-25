@@ -60,7 +60,7 @@ jobs:
         docker build . --file Dockerfile --tag secret-note-api-app:latest
 
     # - name: Run tests
-    #   run: docker-compose exec app npm run test
+    #   todo
 
     - name: Shutdown services
       run: docker-compose down

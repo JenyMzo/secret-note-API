@@ -57,7 +57,7 @@ jobs:
 
     - name: Build and push Docker images
       run: |
-        docker-compose up --build
+        until docker-compose up --build; do sleep 1; done
 
     - name: Wait for DB to be ready
       run: |

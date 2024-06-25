@@ -29,7 +29,7 @@ services:
       - MODE=DEV
       - RUN_MIGRATIONS=true
     ports:
-      - '3001:3000'
+      - '3000:3000'
     depends_on:
       - db
     volumes:

@@ -1,4 +1,4 @@
-import 'dotenv/config';  // Ensure environment variables are loaded
+import 'dotenv/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 export const dataSourceOptions: DataSourceOptions = {
@@ -11,6 +11,4 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: ['src/**/*.entity{.js,.ts}'],
 };
 
-console.log('dataSourceOptions', dataSourceOptions)
-  
 export default new DataSource(dataSourceOptions);

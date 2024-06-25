@@ -34,9 +34,11 @@ Regarding to hashing, it's a one-way process and cannot be used to encrypt and t
 
 ## Getting started
 
-Run ```npm run i``` and ```npm run start```
+* Run ```npm run i```
 
-Start docker container by running ```docker-compose up``` with  ```--build``` flag if you run it for the first time.
+* Create *.env* and *.env.development* files considering *.env.example* file
+
+* Start Docker container by running ```docker-compose up``` with  ```--build``` flag if you run it for the first time.
 
 ## Run tests
 
@@ -44,5 +46,5 @@ Run ```npm run test```
 
 ## API Documentation
 
-Once the server starts, you can see the API documentation navigating to [localhost://3000/api-docs](https://localhost://3000/api-docs)
+Once the server starts, you can see the API documentation navigating to [localhost:3000/api-docs](localhost:3000/api-docs)
 

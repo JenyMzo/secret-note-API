@@ -59,12 +59,8 @@ jobs:
       run: |
         docker build . --file Dockerfile --tag secret-note-api-app:latest
 
-    # - name: Wait for DB to be ready
-    #   run: |
-    #     until docker-compose exec db pg_isready -U postgres; do sleep 1; done
-
     - name: Run tests
-      run: docker-compose exec app npm run test
+      run: npm run test
 
     - name: Shutdown services
       run: docker-compose down
